@@ -10,15 +10,17 @@
 #import "NetworkManager.h"
 
 //Globals
-NSString* URL = @"http://www.google.com";
-int WAIT_TIME = 1;
+NSString* URL = @"http://10.3.14.116/";
+//The arduino can't serve 1000 samples at anything less than
+// 1.3 seconds.
+double_t WAIT_TIME = 1.3;
 
 //Private variables
 @interface ViewController()
 //This has been typedef'd in NetworkManager.h
 @property (nonatomic, copy) CompletionBlock completionBlock;
 //This is the model!
-@property (nonatomic, strong) NSMutableArray* temperatureStore;
+@property (nonatomic, strong) NSArray* temperatureStore;
 @property (nonatomic, strong) NetworkManager* netManager;
 @property (nonatomic, strong) NSURL* ipAddress;
 @property (nonatomic, assign) NSInteger retryCounter;
@@ -49,9 +51,9 @@ int WAIT_TIME = 1;
 - (void) initalizeCompletionBlock{
     self.completionBlock = ^void(NSData* data, NSError* error){
         if(!error){
-            NSLog(@"There was no error.");
+            NSLog(@"Connection Successful.");
             self.retryCounter = 0;
-            //Save to model code
+            [self storeDataAsJSON:data with:error];
             //Reload UI
             //This call takes care of the sleeping
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, WAIT_TIME * NSEC_PER_SEC),
@@ -64,7 +66,7 @@ int WAIT_TIME = 1;
         else{
             self.retryCounter++;
             NSLog(@"There was an error: %u.", self.retryCounter);
-            if(self.retryCounter <=5)
+            if(self.retryCounter <5)
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, WAIT_TIME * NSEC_PER_SEC),
                                dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
                                ^(){
@@ -73,6 +75,14 @@ int WAIT_TIME = 1;
         }
     };
     
+}
+
+- (void) storeDataAsJSON:(NSData*) data with:(NSError*) error{
+    self.temperatureStore = [NSJSONSerialization JSONObjectWithData:data
+                                                            options:kNilOptions error:&error];
+    NSLog(@"%@", self.temperatureStore);
+
+
 }
 
 @end
