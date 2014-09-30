@@ -22,7 +22,7 @@
 		F11D914519D7CAC100C6246A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F11D914319D7CAC100C6246A /* InfoPlist.strings */; };
 		F11D914719D7CAC100C6246A /* ThermometerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F11D914619D7CAC100C6246A /* ThermometerTests.m */; };
 		F1A50BF719D7CB8C001FE2E4 /* NetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F1A50BF619D7CB8C001FE2E4 /* NetworkManager.m */; };
-		F1E0CD9819DA2A280089D3EF /* Alarm.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F1E0CD9719DA2A280089D3EF /* Alarm.mp3 */; };
+		F1E0CD9819DA2A280089D3EF /* alarm.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F1E0CD9719DA2A280089D3EF /* alarm.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,7 +57,7 @@
 		F11D914619D7CAC100C6246A /* ThermometerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThermometerTests.m; sourceTree = "<group>"; };
 		F1A50BF519D7CB8C001FE2E4 /* NetworkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkManager.h; sourceTree = "<group>"; };
 		F1A50BF619D7CB8C001FE2E4 /* NetworkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkManager.m; sourceTree = "<group>"; };
-		F1E0CD9719DA2A280089D3EF /* Alarm.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Alarm.mp3; sourceTree = "<group>"; };
+		F1E0CD9719DA2A280089D3EF /* alarm.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = alarm.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,7 +133,7 @@
 		F11D912219D7CAC100C6246A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				F1E0CD9719DA2A280089D3EF /* Alarm.mp3 */,
+				F1E0CD9719DA2A280089D3EF /* alarm.mp3 */,
 				F11D912319D7CAC100C6246A /* Thermometer-Info.plist */,
 				F11D912419D7CAC100C6246A /* InfoPlist.strings */,
 				F11D912719D7CAC100C6246A /* main.m */,
@@ -236,7 +236,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F1E0CD9819DA2A280089D3EF /* Alarm.mp3 in Resources */,
+				F1E0CD9819DA2A280089D3EF /* alarm.mp3 in Resources */,
 				F11D913419D7CAC100C6246A /* Images.xcassets in Resources */,
 				F11D912619D7CAC100C6246A /* InfoPlist.strings in Resources */,
 				F11D912F19D7CAC100C6246A /* Main.storyboard in Resources */,

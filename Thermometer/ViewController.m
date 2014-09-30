@@ -8,6 +8,8 @@
 
 #import "ViewController.h"
 #import "NetworkManager.h"
+#import <AudioToolbox/AudioToolbox.h>
+#import <AVFoundation/AVFoundation.h>
 
 //Globals
 NSString* URL = @"http://10.3.14.116/";
@@ -24,6 +26,7 @@ double_t WAIT_TIME = 1.3;
 @property (nonatomic, strong) NetworkManager* netManager;
 @property (nonatomic, strong) NSURL* ipAddress;
 @property (nonatomic, assign) NSInteger retryCounter;
+@property (nonatomic, strong) AVAudioPlayer *player;
 @end
 
 
@@ -66,7 +69,7 @@ double_t WAIT_TIME = 1.3;
         else{
             self.retryCounter++;
             NSLog(@"There was an error: %u.", self.retryCounter);
-            if(self.retryCounter <5)
+            if(self.retryCounter <3)
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, WAIT_TIME * NSEC_PER_SEC),
                                dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
                                ^(){
@@ -84,6 +87,47 @@ double_t WAIT_TIME = 1.3;
 
 
 }
+- (void) setUpAlarm{
+    NSString *soundFilePath = [NSString stringWithFormat:@"%@/alarm.mp3",
+                               [[NSBundle mainBundle] resourcePath]];
+    NSLog(@"%@",soundFilePath);
+    NSURL *soundFileURL = [NSURL fileURLWithPath:soundFilePath];
+    NSLog(@"%@", soundFileURL);
+    
+    self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:soundFileURL
+                                                         error:nil];
+    [self.player setVolume:1.0];
+    self.player.numberOfLoops = -1; //Infinite
+}
+
+//Call this to start alarm
+//The alarm will not stop until
+// stopAlarm is called.
+- (void) playAlarm{
+    [self.player play];
+}
+
+//Stops the alarm.
+- (void) stopAlarm{
+    [self.player stop];
+}
 
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
