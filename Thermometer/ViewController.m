@@ -12,7 +12,7 @@
 #import <AVFoundation/AVFoundation.h>
 
 //Globals
-NSString* URL = @"http://10.3.14.116/";
+NSString* URL = @"http://10.3.14.92/";
 //The arduino can't serve 1000 samples at anything less than
 // 1.3 seconds.
 double_t WAIT_TIME = 1.3;
@@ -22,7 +22,8 @@ double_t WAIT_TIME = 1.3;
 //This has been typedef'd in NetworkManager.h
 @property (nonatomic, copy) CompletionBlock completionBlock;
 //This is the model!
-@property (nonatomic, strong) NSArray* temperatureStore;
+//The JSON will be stored as such {"current:float", "one:float", "ten:float"}
+@property (nonatomic, strong) NSDictionary* temperatureStore;
 @property (nonatomic, strong) NetworkManager* netManager;
 @property (nonatomic, strong) NSURL* ipAddress;
 @property (nonatomic, assign) NSInteger retryCounter;
@@ -84,7 +85,6 @@ double_t WAIT_TIME = 1.3;
     self.temperatureStore = [NSJSONSerialization JSONObjectWithData:data
                                                             options:kNilOptions error:&error];
     NSLog(@"%@", self.temperatureStore);
-
 
 }
 - (void) setUpAlarm{
