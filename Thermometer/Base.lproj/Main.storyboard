@@ -17,19 +17,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="100.0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rJX-BU-QCg">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="- - - -" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rJX-BU-QCg">
                                 <rect key="frame" x="258" y="298" width="779" height="353"/>
                                 <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="275"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="highlightedColor" red="0.96842695472114759" green="0.96034688842829186" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="100.1" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tID-O9-y84">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="- - - - " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tID-O9-y84">
                                 <rect key="frame" x="-5" y="433" width="195" height="108"/>
                                 <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="70"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="0.84999999999999998" colorSpace="deviceRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="100.2" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NH5-cO-teJ">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="- - - - " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NH5-cO-teJ">
                                 <rect key="frame" x="-5" y="483" width="445" height="108"/>
                                 <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="70"/>
                                 <color key="textColor" white="1" alpha="0.70000000000000007" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -62,8 +62,9 @@
                                 <rect key="frame" x="-8" y="561" width="1039" height="214"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b8R-Vq-PKe">
-                                        <rect key="frame" x="427" y="14" width="185" height="185"/>
-                                        <state key="normal" title="DISMISS ALARM">
+                                        <rect key="frame" x="434" y="22" width="170" height="170"/>
+                                        <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="75"/>
+                                        <state key="normal" image="DismissButtonInactive.png">
                                             <color key="titleColor" red="0.80392156862745101" green="0.80392156862745101" blue="0.80392156862745101" alpha="1" colorSpace="deviceRGB"/>
                                             <color key="titleShadowColor" red="0.80392156862745101" green="0.80392156862745101" blue="0.80392156862745101" alpha="1" colorSpace="deviceRGB"/>
                                         </state>
@@ -79,6 +80,7 @@
                     </view>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
+                        <outlet property="dismissAlarmControl" destination="b8R-Vq-PKe" id="ev8-FU-pRq"/>
                         <outlet property="fToCControl" destination="YoX-3s-jZQ" id="zeJ-cD-o0U"/>
                         <outlet property="largeDisplayTemp" destination="rJX-BU-QCg" id="9KX-fZ-IXV"/>
                         <outlet property="sub1DisplayLabel" destination="GGY-bt-rSu" id="F8l-5W-l0Q"/>
@@ -92,6 +94,9 @@
             <point key="canvasLocation" x="-439" y="250"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="DismissButtonInactive.png" width="250" height="250"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

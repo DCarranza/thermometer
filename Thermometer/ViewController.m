@@ -34,6 +34,7 @@ float CONVERSION_OFFSET = 7.3;//.35;
 // Temperature property
 @property (nonatomic, assign) BOOL toFaren;
 @property (nonatomic, assign) BOOL isFaren;
+@property (nonatomic, assign) BOOL ableConvert;
 
 // Temperature threshold
 @property (nonatomic, assign) NSNumber* alarmThresh;
@@ -61,14 +62,12 @@ float CONVERSION_OFFSET = 7.3;//.35;
     // Temperature F or C
     self.toFaren = YES;
     self.isFaren = YES;
+    self.ableConvert = NO;
     
     // Set threshold for alarm, set up alarm
     self.alarmThresh = @90;
     self.shouldAlarm = YES;
     [self setUpAlarm];
-    
-    // Test temps
-    [self setUITemps:@91.01 with:@91.01 with:@91.01];
     
 }
 
@@ -101,6 +100,11 @@ float CONVERSION_OFFSET = 7.3;//.35;
         else{
             self.retryCounter++;
             NSLog(@"There was an error: %u.", self.retryCounter);
+            
+            // Send an alert to the user
+            UIAlertView* retryAlert = [[UIAlertView alloc] initWithTitle:@"Something went wrong..." message:@"Ensure the device and wireless network are on." delegate:self cancelButtonTitle:@"Retry" otherButtonTitles:nil];
+            [retryAlert show];
+            
             if(self.retryCounter <10)
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, WAIT_TIME * NSEC_PER_SEC),
                                dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
@@ -195,6 +199,7 @@ float CONVERSION_OFFSET = 7.3;//.35;
     self.sub1DisplayTemp.text = [NSString stringWithFormat:@"%.01f", [toSetSub1Temp floatValue]];
     self.sub2DisplayTemp.text = [NSString stringWithFormat:@"%.01f", [toSetSub2Temp floatValue]];
     
+    self.ableConvert = YES;
     self.isFaren = YES;
     [self convertTemp];
     
@@ -205,10 +210,8 @@ float CONVERSION_OFFSET = 7.3;//.35;
     [self playAlarm];
     self.view.backgroundColor = [UIColor colorWithRed:166.0/256.0 green:63.0/256.0 blue:66.0/256.0 alpha:1.0];
     
-    // Set the dismiss alarm image on alarm activation
-    NSString *dismissBtnActivePath = [NSString stringWithFormat:@"%@/DismissButton.png",
-                                      [[NSBundle mainBundle] resourcePath]];
-    [self.dismissAlarmControl setImage:[UIImage imageNamed:dismissBtnActivePath] forState:UIControlStateNormal];
+    // Set the image
+    [self.dismissAlarmControl setImage:[UIImage imageNamed:@"DismissButton.png"] forState:UIControlStateNormal];
 }
 
 // Stops the alarm
@@ -216,10 +219,8 @@ float CONVERSION_OFFSET = 7.3;//.35;
     [self stopAlarm];
     self.view.backgroundColor = [UIColor colorWithRed:63.0/256.0 green:166.0/256.0 blue:126.0/256.0 alpha:1.0];
     
-    // Set the dismiss alarm image on alarm deactivation
-    NSString* dismissBtnInactivePath = [NSString stringWithFormat:@"%@/DismissButtonInactive.png",
-                                        [[NSBundle mainBundle] resourcePath]];
-    [self.dismissAlarmControl setImage:[UIImage imageNamed:dismissBtnInactivePath] forState:UIControlStateNormal];
+    // Set the image
+    [self.dismissAlarmControl setImage:[UIImage imageNamed:@"DismissButtonInactive.png"] forState:UIControlStateNormal];
 }
 
 // Converts any Farenheit value to a Celsius value
@@ -254,6 +255,8 @@ float CONVERSION_OFFSET = 7.3;//.35;
 
 // IBAction method for the F/C toggle
 - (IBAction)toggleTempType:(id)sender {
+    if (!self.ableConvert) { return; }
+
     if (self.toFaren) {
         self.toFaren = NO;
     }
