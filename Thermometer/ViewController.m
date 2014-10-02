@@ -30,6 +30,14 @@ float CONVERSION_OFFSET = 7.3;//.35;
 @property (nonatomic, strong) NSURL* ipAddress;
 @property (nonatomic, assign) NSInteger retryCounter;
 @property (nonatomic, strong) AVAudioPlayer *player;
+
+// Temperature property
+@property (nonatomic, assign) BOOL toFaren;
+@property (nonatomic, assign) BOOL isFaren;
+
+// Temperature threshold
+@property (nonatomic, assign) NSNumber* alarmThresh;
+@property (nonatomic, assign) BOOL shouldAlarm;
 @end
 
 
@@ -47,8 +55,20 @@ float CONVERSION_OFFSET = 7.3;//.35;
     [self.netManager establishConnection:self.completionBlock];
     
     // Temperature labels
-    self.sub1DisplayLabel.text = @"current read";
-    self.sub2DisplayLabel.text = @"10s average";
+    self.sub1DisplayLabel.text = @"(CURR)";
+    self.sub2DisplayLabel.text = @"(10s)";
+    
+    // Temperature F or C
+    self.toFaren = YES;
+    self.isFaren = YES;
+    
+    // Set threshold for alarm, set up alarm
+    self.alarmThresh = @90;
+    self.shouldAlarm = YES;
+    [self setUpAlarm];
+    
+    // Test temps
+    [self setUITemps:@91.01 with:@91.01 with:@91.01];
     
 }
 
@@ -147,6 +167,8 @@ float CONVERSION_OFFSET = 7.3;//.35;
 }
 
 
+
+
 /*
  UI Methods
  - Methods that control single-page view
@@ -158,20 +180,92 @@ float CONVERSION_OFFSET = 7.3;//.35;
 // - @param tenSecDisplayToSet : The ten-second avg. temperature display will display this NSNumber
 - (void) setUITemps: (NSNumber*) toSetLargeTemp with: (NSNumber*) toSetSub1Temp with: (NSNumber*) toSetSub2Temp {
     
+    // Activate alarm if temperature is high enough
+    if (([toSetLargeTemp doubleValue] > [self.alarmThresh doubleValue]) && self.shouldAlarm) {
+        self.shouldAlarm = NO;
+        [self startUIAlarm];
+    }
+    else {
+        self.shouldAlarm = YES;
+        [self stopUIAlarm];
+    }
+    
     // Set the temperature displays
     self.largeDisplayTemp.text = [NSString stringWithFormat:@"%.01f", [toSetLargeTemp floatValue]];
     self.sub1DisplayTemp.text = [NSString stringWithFormat:@"%.01f", [toSetSub1Temp floatValue]];
     self.sub2DisplayTemp.text = [NSString stringWithFormat:@"%.01f", [toSetSub2Temp floatValue]];
+    
+    self.isFaren = YES;
+    [self convertTemp];
+    
 }
 
 // Starts the alarm
 - (void) startUIAlarm {
     [self playAlarm];
+    self.view.backgroundColor = [UIColor colorWithRed:166.0/256.0 green:63.0/256.0 blue:66.0/256.0 alpha:1.0];
+    
+    // Set the dismiss alarm image on alarm activation
+    NSString *dismissBtnActivePath = [NSString stringWithFormat:@"%@/DismissButton.png",
+                                      [[NSBundle mainBundle] resourcePath]];
+    [self.dismissAlarmControl setImage:[UIImage imageNamed:dismissBtnActivePath] forState:UIControlStateNormal];
 }
 
 // Stops the alarm
 - (void) stopUIAlarm {
     [self stopAlarm];
+    self.view.backgroundColor = [UIColor colorWithRed:63.0/256.0 green:166.0/256.0 blue:126.0/256.0 alpha:1.0];
+    
+    // Set the dismiss alarm image on alarm deactivation
+    NSString* dismissBtnInactivePath = [NSString stringWithFormat:@"%@/DismissButtonInactive.png",
+                                        [[NSBundle mainBundle] resourcePath]];
+    [self.dismissAlarmControl setImage:[UIImage imageNamed:dismissBtnInactivePath] forState:UIControlStateNormal];
+}
+
+// Converts any Farenheit value to a Celsius value
+- (float) convertFtoC: (float) toConvert {
+    return (float)(toConvert-32)*(5/(float)9);
+}
+
+// Converts any Celsius value to a Farenheit value
+- (float) convertCtoF: (float) toConvert {
+    return (float)(toConvert*(9/(float)5))+32;
+}
+
+// Translates current temperature by bool
+- (void) convertTemp {
+    if (!self.toFaren && self.isFaren) {
+        // Convert all display temperatures to celsius
+        self.largeDisplayTemp.text = [NSString stringWithFormat:@"%.01f", [self convertFtoC:[self.largeDisplayTemp.text floatValue]]];
+        self.sub1DisplayTemp.text = [NSString stringWithFormat:@"%.01f", [self convertFtoC:[self.sub1DisplayTemp.text floatValue]]];
+        self.sub2DisplayTemp.text = [NSString stringWithFormat:@"%.01f", [self convertFtoC:[self.sub2DisplayTemp.text floatValue]]];
+        
+        self.isFaren = NO;
+    }
+    else if (self.toFaren && !self.isFaren) {
+        // Convert all display temperatures to celsius
+        self.largeDisplayTemp.text = [NSString stringWithFormat:@"%.01f", [self convertCtoF:[self.largeDisplayTemp.text floatValue]]];
+        self.sub1DisplayTemp.text = [NSString stringWithFormat:@"%.01f", [self convertCtoF:[self.sub1DisplayTemp.text floatValue]]];
+        self.sub2DisplayTemp.text = [NSString stringWithFormat:@"%.01f", [self convertCtoF:[self.sub2DisplayTemp.text floatValue]]];
+        
+        self.isFaren = YES;
+    }
+}
+
+// IBAction method for the F/C toggle
+- (IBAction)toggleTempType:(id)sender {
+    if (self.toFaren) {
+        self.toFaren = NO;
+    }
+    else {
+        self.toFaren = YES;
+    }
+    [self convertTemp];
+}
+
+// IBAction method for the dismiss
+- (IBAction)dismissAlarm:(id)sender {
+    [self stopUIAlarm];
 }
 
 @end

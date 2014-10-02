@@ -19,4 +19,10 @@
 @property (nonatomic, weak) IBOutlet UILabel *sub1DisplayLabel;
 @property (nonatomic, weak) IBOutlet UILabel *sub2DisplayLabel;
 
+// F to C button
+@property (nonatomic, weak) IBOutlet UISegmentedControl *fToCControl;
+
+// Dismiss alarm button
+@property (nonatomic, weak) IBOutlet UIButton* dismissAlarmControl;
+
 @end

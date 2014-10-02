@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		25AEBE4E19DD22A600CFAB4B /* DismissButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 25AEBE4D19DD22A600CFAB4B /* DismissButton.png */; };
+		25AEBE5019DD247300CFAB4B /* DismissButtonInactive.png in Resources */ = {isa = PBXBuildFile; fileRef = 25AEBE4F19DD247300CFAB4B /* DismissButtonInactive.png */; };
 		F11D911C19D7CAC100C6246A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F11D911B19D7CAC100C6246A /* Foundation.framework */; };
 		F11D911E19D7CAC100C6246A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F11D911D19D7CAC100C6246A /* CoreGraphics.framework */; };
 		F11D912019D7CAC100C6246A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F11D911F19D7CAC100C6246A /* UIKit.framework */; };
@@ -36,6 +38,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		25AEBE4D19DD22A600CFAB4B /* DismissButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DismissButton.png; sourceTree = "<group>"; };
+		25AEBE4F19DD247300CFAB4B /* DismissButtonInactive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DismissButtonInactive.png; sourceTree = "<group>"; };
 		F11D911819D7CAC100C6246A /* Thermometer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Thermometer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F11D911B19D7CAC100C6246A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		F11D911D19D7CAC100C6246A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -133,6 +137,8 @@
 		F11D912219D7CAC100C6246A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				25AEBE4F19DD247300CFAB4B /* DismissButtonInactive.png */,
+				25AEBE4D19DD22A600CFAB4B /* DismissButton.png */,
 				F1E0CD9719DA2A280089D3EF /* alarm.mp3 */,
 				F11D912319D7CAC100C6246A /* Thermometer-Info.plist */,
 				F11D912419D7CAC100C6246A /* InfoPlist.strings */,
@@ -239,7 +245,9 @@
 				F1E0CD9819DA2A280089D3EF /* alarm.mp3 in Resources */,
 				F11D913419D7CAC100C6246A /* Images.xcassets in Resources */,
 				F11D912619D7CAC100C6246A /* InfoPlist.strings in Resources */,
+				25AEBE4E19DD22A600CFAB4B /* DismissButton.png in Resources */,
 				F11D912F19D7CAC100C6246A /* Main.storyboard in Resources */,
+				25AEBE5019DD247300CFAB4B /* DismissButtonInactive.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
