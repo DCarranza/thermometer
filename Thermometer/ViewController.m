@@ -45,6 +45,10 @@ float CONVERSION_CONSTANT = .1;
     //Run network code
     [self.netManager establishConnection:self.completionBlock];
     
+    // Temperature labels
+    self.sub1DisplayLabel.text = @"1s average";
+    self.sub2DisplayLabel.text = @"10s average";
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -110,7 +114,6 @@ float CONVERSION_CONSTANT = .1;
     [self.temperatureStore setObject:[NSNumber numberWithFloat:tenSecondAverage]
                               forKey:@"ten"];
     NSLog(@"This is the converted! %@",self.temperatureStore);
-
 }
 
 - (void) setUpAlarm{
@@ -136,6 +139,38 @@ float CONVERSION_CONSTANT = .1;
 //Stops the alarm.
 - (void) stopAlarm{
     [self.player stop];
+}
+
+
+/*
+ UI Methods
+ - Methods that control single-page view
+ */
+
+// Sets all of the temperature reads
+// - @param currDisplayToSet : The current temperature display will display this NSInteger
+// - @param oneSecDisplayToSet : The one-second temperature display will display this NSInteger
+// - @param tenSecDisplayToSet : The ten-second avg. temperature display will display this NSInteger
+- (void) setUITemps: (NSInteger*) toSetLargeTemp with: (NSInteger*) toSetSub1Temp with: (NSInteger*) toSetSub2Temp with: (NSString*) toSetSub1Label with: (NSString*) toSetSub2Label {
+    
+    // Set the temperature displays
+    self.largeDisplayTemp.text = [NSString stringWithFormat:@"%ld", (long)toSetLargeTemp];
+    self.sub1DisplayTemp.text = [NSString stringWithFormat:@"%ld", (long)toSetSub1Temp];
+    self.sub2DisplayTemp.text = [NSString stringWithFormat:@"%ld", (long)toSetSub2Temp];
+    
+    // Set the temperature display labels
+    self.sub1DisplayLabel.text = toSetSub1Label;
+    self.sub2DisplayLabel.text = toSetSub2Label;
+}
+
+// Starts the alarm
+- (void) startUIAlarm {
+    [self playAlarm];
+}
+
+// Stops the alarm
+- (void) stopUIAlarm {
+    [self stopAlarm];
 }
 
 @end

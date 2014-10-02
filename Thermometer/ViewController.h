@@ -9,4 +9,14 @@
 #import <UIKit/UIKit.h>
 
 @interface ViewController : UIViewController
+
+// Temperatures
+@property (nonatomic, weak) IBOutlet UILabel *largeDisplayTemp;
+@property (nonatomic, weak) IBOutlet UILabel *sub1DisplayTemp;
+@property (nonatomic, weak) IBOutlet UILabel *sub2DisplayTemp;
+
+// Temperature labels
+@property (nonatomic, weak) IBOutlet UILabel *sub1DisplayLabel;
+@property (nonatomic, weak) IBOutlet UILabel *sub2DisplayLabel;
+
 @end

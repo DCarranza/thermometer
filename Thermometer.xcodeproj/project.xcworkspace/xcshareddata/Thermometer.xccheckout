@@ -10,7 +10,7 @@
 	<string>Thermometer</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>C9DE6115-01BA-48BF-8F66-9FE3A1AF0F82</key>
+		<key>C998EBC5E091F26463F7A7E667FFE2DC7613BCBE</key>
 		<string>https://www.github.com/DCarranza/thermometer</string>
 		<key>D1DBB1BE-3221-4C4C-B131-581A10F683E0</key>
 		<string>https://www.github.com/DCarranza/thermometer</string>
@@ -19,24 +19,24 @@
 	<string>Thermometer.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>C9DE6115-01BA-48BF-8F66-9FE3A1AF0F82</key>
+		<key>C998EBC5E091F26463F7A7E667FFE2DC7613BCBE</key>
 		<string>../..</string>
 		<key>D1DBB1BE-3221-4C4C-B131-581A10F683E0</key>
-		<string>../../../../../Developer/xcode/Thermometer</string>
+		<string>../../../Developer/xcode/Thermometer</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://www.github.com/DCarranza/thermometer</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>C9DE6115-01BA-48BF-8F66-9FE3A1AF0F82</string>
+	<string>C998EBC5E091F26463F7A7E667FFE2DC7613BCBE</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>C9DE6115-01BA-48BF-8F66-9FE3A1AF0F82</string>
+			<string>C998EBC5E091F26463F7A7E667FFE2DC7613BCBE</string>
 			<key>IDESourceControlWCCName</key>
 			<string>Thermometer</string>
 		</dict>
