@@ -17,8 +17,8 @@ NSTimeInterval TIMEOUT_IN_SECONDS = 5.0;
     self.configObject = [NSURLSessionConfiguration defaultSessionConfiguration];
     self.configObject.timeoutIntervalForRequest = TIMEOUT_IN_SECONDS;
     self.defaultSession = [NSURLSession sessionWithConfiguration:self.configObject
-                                                        delegate: nil
-                                                   delegateQueue: nil];
+                                                        delegate:nil
+                                                   delegateQueue:[NSOperationQueue mainQueue]];
     return self;
 }
 

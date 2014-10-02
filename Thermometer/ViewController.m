@@ -16,7 +16,8 @@ NSString* URL = @"http://10.3.14.183/";
 //The arduino can't serve 1000 samples at anything less than
 // 1.3 seconds.
 double_t WAIT_TIME = 1.3;
-float CONVERSION_CONSTANT = .1;
+float CONVERSION_SLOPE = .4382;
+float CONVERSION_OFFSET = 7.3;//.35;
 
 //Private variables
 @interface ViewController()
@@ -46,7 +47,7 @@ float CONVERSION_CONSTANT = .1;
     [self.netManager establishConnection:self.completionBlock];
     
     // Temperature labels
-    self.sub1DisplayLabel.text = @"1s average";
+    self.sub1DisplayLabel.text = @"current read";
     self.sub2DisplayLabel.text = @"10s average";
     
 }
@@ -63,7 +64,12 @@ float CONVERSION_CONSTANT = .1;
             NSLog(@"Connection Successful.");
             self.retryCounter = 0;
             [self storeDataAsJSON:data with:error];
-            //Reload UI
+            NSNumber* tempCurrent = [self.temperatureStore objectForKey:@"current"];
+            NSNumber* tempOneSecondAvg = [self.temperatureStore objectForKey:@"one"];
+            NSNumber* tempTenSecondAvg = [self.temperatureStore objectForKey:@"ten"];
+            NSLog(@"current is %@",tempCurrent);
+            NSLog(@"onesec is %@", tempOneSecondAvg);
+            [self setUITemps:tempOneSecondAvg with:tempCurrent with:tempTenSecondAvg];
             //This call takes care of the sleeping
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, WAIT_TIME * NSEC_PER_SEC),
                            dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
@@ -101,10 +107,9 @@ float CONVERSION_CONSTANT = .1;
     
     //Convert to F
     NSLog(@"Unconvrted current %f", current);
-    current = current*CONVERSION_CONSTANT + 61.7;
-    oneSecondAverage = oneSecondAverage*CONVERSION_CONSTANT + 61.7;
-    tenSecondAverage = tenSecondAverage*CONVERSION_CONSTANT + 61.7;
-    NSLog(@"converted current %f", current);
+    current = current*CONVERSION_SLOPE + CONVERSION_OFFSET;
+    oneSecondAverage = oneSecondAverage*CONVERSION_SLOPE + CONVERSION_OFFSET;
+    tenSecondAverage = tenSecondAverage*CONVERSION_SLOPE + CONVERSION_OFFSET;
     
     //Store
     [self.temperatureStore setObject:[NSNumber numberWithFloat:current]
@@ -148,19 +153,15 @@ float CONVERSION_CONSTANT = .1;
  */
 
 // Sets all of the temperature reads
-// - @param currDisplayToSet : The current temperature display will display this NSInteger
-// - @param oneSecDisplayToSet : The one-second temperature display will display this NSInteger
-// - @param tenSecDisplayToSet : The ten-second avg. temperature display will display this NSInteger
-- (void) setUITemps: (NSInteger*) toSetLargeTemp with: (NSInteger*) toSetSub1Temp with: (NSInteger*) toSetSub2Temp with: (NSString*) toSetSub1Label with: (NSString*) toSetSub2Label {
+// - @param currDisplayToSet : The current temperature display will display this NSNumber
+// - @param oneSecDisplayToSet : The one-second temperature display will display this NSNumber
+// - @param tenSecDisplayToSet : The ten-second avg. temperature display will display this NSNumber
+- (void) setUITemps: (NSNumber*) toSetLargeTemp with: (NSNumber*) toSetSub1Temp with: (NSNumber*) toSetSub2Temp {
     
     // Set the temperature displays
-    self.largeDisplayTemp.text = [NSString stringWithFormat:@"%ld", (long)toSetLargeTemp];
-    self.sub1DisplayTemp.text = [NSString stringWithFormat:@"%ld", (long)toSetSub1Temp];
-    self.sub2DisplayTemp.text = [NSString stringWithFormat:@"%ld", (long)toSetSub2Temp];
-    
-    // Set the temperature display labels
-    self.sub1DisplayLabel.text = toSetSub1Label;
-    self.sub2DisplayLabel.text = toSetSub2Label;
+    self.largeDisplayTemp.text = [NSString stringWithFormat:@"%.01f", [toSetLargeTemp floatValue]];
+    self.sub1DisplayTemp.text = [NSString stringWithFormat:@"%.01f", [toSetSub1Temp floatValue]];
+    self.sub2DisplayTemp.text = [NSString stringWithFormat:@"%.01f", [toSetSub2Temp floatValue]];
 }
 
 // Starts the alarm
