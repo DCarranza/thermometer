@@ -12,10 +12,11 @@
 #import <AVFoundation/AVFoundation.h>
 
 //Globals
-NSString* URL = @"http://10.3.14.92/";
+NSString* URL = @"http://10.3.14.183/";
 //The arduino can't serve 1000 samples at anything less than
 // 1.3 seconds.
 double_t WAIT_TIME = 1.3;
+float CONVERSION_CONSTANT = .1;
 
 //Private variables
 @interface ViewController()
@@ -23,7 +24,7 @@ double_t WAIT_TIME = 1.3;
 @property (nonatomic, copy) CompletionBlock completionBlock;
 //This is the model!
 //The JSON will be stored as such {"current:float", "one:float", "ten:float"}
-@property (nonatomic, strong) NSDictionary* temperatureStore;
+@property (nonatomic, strong) NSMutableDictionary* temperatureStore;
 @property (nonatomic, strong) NetworkManager* netManager;
 @property (nonatomic, strong) NSURL* ipAddress;
 @property (nonatomic, assign) NSInteger retryCounter;
@@ -70,7 +71,7 @@ double_t WAIT_TIME = 1.3;
         else{
             self.retryCounter++;
             NSLog(@"There was an error: %u.", self.retryCounter);
-            if(self.retryCounter <3)
+            if(self.retryCounter <10)
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, WAIT_TIME * NSEC_PER_SEC),
                                dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
                                ^(){
@@ -82,11 +83,36 @@ double_t WAIT_TIME = 1.3;
 }
 
 - (void) storeDataAsJSON:(NSData*) data with:(NSError*) error{
-    self.temperatureStore = [NSJSONSerialization JSONObjectWithData:data
+    NSDictionary* rawData = [NSJSONSerialization JSONObjectWithData:data
                                                             options:kNilOptions error:&error];
-    NSLog(@"%@", self.temperatureStore);
+    NSLog(@"Unconverted %@", rawData);
+    [self convertToF:rawData];
+   }
+
+- (void) convertToF: (NSDictionary *)rawData{
+    self.temperatureStore = [rawData mutableCopy];
+    float current = [[self.temperatureStore objectForKey:@"current"] floatValue];
+    float oneSecondAverage = [[self.temperatureStore objectForKey:@"one"] floatValue];
+    float tenSecondAverage = [[self.temperatureStore objectForKey:@"ten"] floatValue];
+    
+    //Convert to F
+    NSLog(@"Unconvrted current %f", current);
+    current = current*CONVERSION_CONSTANT + 61.7;
+    oneSecondAverage = oneSecondAverage*CONVERSION_CONSTANT + 61.7;
+    tenSecondAverage = tenSecondAverage*CONVERSION_CONSTANT + 61.7;
+    NSLog(@"converted current %f", current);
+    
+    //Store
+    [self.temperatureStore setObject:[NSNumber numberWithFloat:current]
+                              forKey:@"current"];
+    [self.temperatureStore setObject:[NSNumber numberWithFloat:oneSecondAverage]
+                              forKey:@"one"];
+    [self.temperatureStore setObject:[NSNumber numberWithFloat:tenSecondAverage]
+                              forKey:@"ten"];
+    NSLog(@"This is the converted! %@",self.temperatureStore);
 
 }
+
 - (void) setUpAlarm{
     NSString *soundFilePath = [NSString stringWithFormat:@"%@/alarm.mp3",
                                [[NSBundle mainBundle] resourcePath]];
