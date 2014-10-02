@@ -12,12 +12,12 @@
 #import <AVFoundation/AVFoundation.h>
 
 //Globals
-NSString* URL = @"http://10.3.14.183/";
+NSString* URL = @"http://10.3.14.213/";
 //The arduino can't serve 1000 samples at anything less than
 // 1.3 seconds.
 double_t WAIT_TIME = 1.3;
 float CONVERSION_SLOPE = .4382;
-float CONVERSION_OFFSET = 7.3;//.35;
+float CONVERSION_OFFSET = 9.3;//.35;
 
 //Private variables
 @interface ViewController()
@@ -37,7 +37,7 @@ float CONVERSION_OFFSET = 7.3;//.35;
 @property (nonatomic, assign) BOOL ableConvert;
 
 // Temperature threshold
-@property (nonatomic, assign) NSNumber* alarmThresh;
+@property (nonatomic, assign) double alarmThresh;
 @property (nonatomic, assign) BOOL shouldAlarm;
 @end
 
@@ -65,7 +65,7 @@ float CONVERSION_OFFSET = 7.3;//.35;
     self.ableConvert = NO;
     
     // Set threshold for alarm, set up alarm
-    self.alarmThresh = @90;
+    self.alarmThresh = 90;
     self.shouldAlarm = YES;
     [self setUpAlarm];
     
@@ -105,7 +105,7 @@ float CONVERSION_OFFSET = 7.3;//.35;
             UIAlertView* retryAlert = [[UIAlertView alloc] initWithTitle:@"Something went wrong..." message:@"Ensure the device and wireless network are on." delegate:self cancelButtonTitle:@"Retry" otherButtonTitles:nil];
             [retryAlert show];
             
-            if(self.retryCounter <10)
+            if(self.retryCounter <100)
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, WAIT_TIME * NSEC_PER_SEC),
                                dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
                                ^(){
@@ -185,11 +185,11 @@ float CONVERSION_OFFSET = 7.3;//.35;
 - (void) setUITemps: (NSNumber*) toSetLargeTemp with: (NSNumber*) toSetSub1Temp with: (NSNumber*) toSetSub2Temp {
     
     // Activate alarm if temperature is high enough
-    if (([toSetLargeTemp doubleValue] > [self.alarmThresh doubleValue]) && self.shouldAlarm) {
-        self.shouldAlarm = NO;
+    if (([toSetLargeTemp doubleValue] >= self.alarmThresh)) {
         [self startUIAlarm];
     }
-    else {
+    // Reactivate alarm when goes below threshold
+    else if (([toSetLargeTemp doubleValue] < self.alarmThresh) && !self.shouldAlarm) {
         self.shouldAlarm = YES;
         [self stopUIAlarm];
     }
@@ -268,6 +268,7 @@ float CONVERSION_OFFSET = 7.3;//.35;
 
 // IBAction method for the dismiss
 - (IBAction)dismissAlarm:(id)sender {
+    self.shouldAlarm = NO;
     [self stopUIAlarm];
 }
 
