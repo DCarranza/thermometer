@@ -39,6 +39,7 @@ float CONVERSION_OFFSET = 9.3;//.35;
 // Temperature threshold
 @property (nonatomic, assign) double alarmThresh;
 @property (nonatomic, assign) BOOL shouldAlarm;
+@property (nonatomic, assign) BOOL isAlarming;
 @end
 
 
@@ -67,6 +68,7 @@ float CONVERSION_OFFSET = 9.3;//.35;
     // Set threshold for alarm, set up alarm
     self.alarmThresh = 90;
     self.shouldAlarm = YES;
+    self.isAlarming = NO;
     [self setUpAlarm];
     
 }
@@ -163,11 +165,13 @@ float CONVERSION_OFFSET = 9.3;//.35;
 // stopAlarm is called.
 - (void) playAlarm{
     [self.player play];
+    self.isAlarming = YES;
 }
 
 //Stops the alarm.
 - (void) stopAlarm{
     [self.player stop];
+    self.isAlarming = NO;
 }
 
 
@@ -185,11 +189,11 @@ float CONVERSION_OFFSET = 9.3;//.35;
 - (void) setUITemps: (NSNumber*) toSetLargeTemp with: (NSNumber*) toSetSub1Temp with: (NSNumber*) toSetSub2Temp {
     
     // Activate alarm if temperature is high enough
-    if (([toSetLargeTemp doubleValue] >= self.alarmThresh)) {
+    if (!self.isAlarming && ([toSetLargeTemp doubleValue] >= self.alarmThresh) && self.shouldAlarm) {
         [self startUIAlarm];
     }
     // Reactivate alarm when goes below threshold
-    else if (([toSetLargeTemp doubleValue] < self.alarmThresh) && !self.shouldAlarm) {
+    else if (([toSetLargeTemp doubleValue] < self.alarmThresh)) {
         self.shouldAlarm = YES;
         [self stopUIAlarm];
     }
